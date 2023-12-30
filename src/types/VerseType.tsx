@@ -7,7 +7,7 @@ export type Translations = {
 
 export type VerseType = {
   id: number;
-  verse_number: number;
+  chapter_number: number;
   slug: string;
   text: string;
   transliteration: string;
