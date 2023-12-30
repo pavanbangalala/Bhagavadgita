@@ -6,6 +6,7 @@ import {
   View,
   ActivityIndicator,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import Colors from '../utils/Colors';
@@ -15,6 +16,8 @@ import {useRoute} from '@react-navigation/native';
 import {useGetVersesQuery} from '../redux/GitaApi';
 import VerseItem from '../components/VerseItem';
 import Strings from '../utils/Strings';
+import VerseTitle from '../components/VerseTitle';
+import {VerseType} from '../types/VerseType';
 
 type VersesProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'VerseListScreen'>;
@@ -24,7 +27,11 @@ type VersesProps = {
 const Verses = ({navigation}: VersesProps) => {
   const index = useRoute().params?.index;
   const {data, isLoading, isSuccess} = useGetVersesQuery(index);
-  console.log('route =>', index);
+  console.log('route =>', data);
+
+  const handleVerseSelection = (verse: VerseType) => {
+    navigation.navigate('VerseDetails');
+  };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -41,19 +48,24 @@ const Verses = ({navigation}: VersesProps) => {
           <ActivityIndicator size={'large'} color={Colors.marron_oak} />
         </View>
       ) : isSuccess ? (
-        <View style={{marginVertical: 12}}>
-          <FlatList
-            data={data}
-            renderItem={({item}) => (
-              <VerseItem
-                verse={item}
-                onNavigation={(index: number) =>
-                  navigation.navigate('VerseDetails', {verse: item})
-                }
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View
+            style={{
+              paddingVertical: 12,
+              flexDirection: 'row',
+              gap: 12,
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+            }}>
+            {data?.map((item: VerseType) => (
+              <VerseTitle
+                index={item.id}
+                onPress={() => handleVerseSelection(item)}
               />
-            )}
-          />
-        </View>
+            ))}
+          </View>
+        </ScrollView>
       ) : (
         <Text style={styles.error}>{Strings.APP_ERROR}</Text>
       )}
@@ -96,3 +108,19 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
+
+{
+  /* <View style={{marginVertical: 12}}>
+          <FlatList
+            data={data}
+            renderItem={({item}) => (
+              <VerseItem
+                verse={item}
+                onNavigation={(index: number) =>
+                  navigation.navigate('VerseDetails', {verse: item})
+                }
+              />
+            )}
+          />
+        </View> */
+}
