@@ -9,11 +9,12 @@ import {ApiProvider} from '@reduxjs/toolkit/query/react';
 import {api} from './src/redux/GitaApi';
 import {Provider} from 'react-redux';
 import store from './src/redux/Store';
+import {VerseType} from './src/types/VerseType';
 
 export type RootStackParamList = {
   HomeScreen: undefined;
   VerseListScreen: {index: number};
-  VerseDetails: undefined;
+  VerseDetails: {verse: VerseType};
 };
 
 const MainStack = createNativeStackNavigator<RootStackParamList>();
