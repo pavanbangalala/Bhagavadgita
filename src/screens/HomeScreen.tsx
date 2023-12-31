@@ -30,7 +30,9 @@ const HomeScreen = ({navigation}: HomeScreenProps) => {
         backgroundColor={Colors.backgroundColor}
       />
       {isLoading ? (
-        <ActivityIndicator size={'large'} color={Colors.marron_oak} />
+        <View style={styles.activityIndicatorContainer}>
+          <ActivityIndicator size={'large'} color={Colors.marron_oak} />
+        </View>
       ) : isSuccess ? (
         <SwiperFlatList
           data={data}
@@ -65,5 +67,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '75%',
     height: '100%',
+  },
+  activityIndicatorContainer: {
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

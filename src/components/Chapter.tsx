@@ -19,16 +19,7 @@ const Chapter = ({chapter, onNavigation}: ChapterProps) => {
           </Text>
         </View>
         <View style={styles.chapterContainer}>
-          <View
-            style={{
-              backgroundColor: Colors.slate_grey,
-              borderRadius: 4,
-              elevation: 6,
-              marginLeft: 4,
-              borderColor: Colors.dark_grey,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+          <View style={styles.chapterNumberContainer}>
             <Text style={styles.number}>{chapter.chapter_number}</Text>
             <Text style={styles.chapter}>Chapter</Text>
           </View>
@@ -51,27 +42,11 @@ const Chapter = ({chapter, onNavigation}: ChapterProps) => {
             style={{color: Colors.marron_oak, fontSize: 20, fontWeight: '700'}}>
             chapter_summary :
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginVertical: 8,
-              marginTop: 12,
-              paddingVertical: 4,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+          <View style={styles.languageContainer}>
             <Text
               onPress={() => setEnglish(true)}
               style={[
-                {
-                  borderColor: Colors.marron_oak,
-                  borderWidth: 1,
-                  paddingHorizontal: 16,
-                  paddingVertical: 4,
-                  borderTopLeftRadius: 6,
-                  borderBottomLeftRadius: 6,
-                  borderRightWidth: 0,
-                },
+                styles.english,
                 isEnglish ? {...styles.selected_lang} : null,
               ]}>
               English
@@ -79,29 +54,14 @@ const Chapter = ({chapter, onNavigation}: ChapterProps) => {
             <Text
               onPress={() => setEnglish(false)}
               style={[
-                {
-                  borderColor: Colors.marron_oak,
-                  borderWidth: 1,
-                  paddingHorizontal: 21,
-                  paddingVertical: 4,
-                  borderTopRightRadius: 6,
-                  borderBottomRightRadius: 6,
-                },
+                styles.hindi,
                 isEnglish ? null : {...styles.selected_lang},
               ]}>
               Hindi
             </Text>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text
-              style={{
-                fontSize: 18,
-                textAlign: 'justify',
-                marginVertical: 12,
-                color: Colors.marron_oak,
-                letterSpacing: 0.2,
-              }}
-              ellipsizeMode="tail">
+            <Text style={styles.summaryTitle} ellipsizeMode="tail">
               {isEnglish
                 ? chapter.chapter_summary
                 : chapter.chapter_summary_hindi}
@@ -161,7 +121,7 @@ const styles = StyleSheet.create({
   chapterContainer: {flexDirection: 'row', marginVertical: 16},
   verseContainer: {
     flex: 1,
-    paddingLeft: 12,
+    paddingLeft: 24,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
@@ -192,5 +152,46 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  chapterNumnberContainer: {
+    backgroundColor: Colors.slate_grey,
+    borderRadius: 4,
+    elevation: 6,
+    marginLeft: 4,
+    borderColor: Colors.dark_grey,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  hindi: {
+    borderColor: Colors.marron_oak,
+    borderWidth: 1,
+    paddingHorizontal: 21,
+    paddingVertical: 4,
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
+  },
+  summaryTitle: {
+    fontSize: 18,
+    textAlign: 'justify',
+    marginVertical: 12,
+    color: Colors.marron_oak,
+    letterSpacing: 0.2,
+  },
+  languageContainer: {
+    flexDirection: 'row',
+    marginVertical: 8,
+    marginTop: 12,
+    paddingVertical: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  english: {
+    borderColor: Colors.marron_oak,
+    borderWidth: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 4,
+    borderTopLeftRadius: 6,
+    borderBottomLeftRadius: 6,
+    borderRightWidth: 0,
   },
 });
