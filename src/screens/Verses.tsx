@@ -6,6 +6,7 @@ import {
   View,
   ActivityIndicator,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import Colors from '../utils/Colors';
@@ -15,6 +16,8 @@ import {useRoute} from '@react-navigation/native';
 import {useGetVersesQuery} from '../redux/GitaApi';
 import VerseItem from '../components/VerseItem';
 import Strings from '../utils/Strings';
+import VerseTitle from '../components/VerseTitle';
+import {VerseType} from '../types/VerseType';
 
 type VersesProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'VerseListScreen'>;
@@ -24,39 +27,44 @@ type VersesProps = {
 const Verses = ({navigation}: VersesProps) => {
   const index = useRoute().params?.index;
   const {data, isLoading, isSuccess} = useGetVersesQuery(index);
-  console.log('route =>', index);
+  console.log('route =>', data);
+
+  const handleVerseSelection = (verse: VerseType) => {
+    navigation.navigate('VerseDetails', {verse});
+  };
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={Colors.backgroundColor}
-      />
-      <View style={styles.header}>
-        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-          {`Chapter ${index}`}
-        </Text>
+    <SafeAreaView style={styles.safeContainer}>
+      <View style={styles.container}>
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={Colors.backgroundColor}
+        />
+        <View style={styles.header}>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+            {`Chapter ${index}`}
+          </Text>
+        </View>
+        {isLoading ? (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size={'large'} color={Colors.marron_oak} />
+          </View>
+        ) : isSuccess ? (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.verseTile}>
+              {data?.map((item: VerseType) => (
+                <VerseTitle
+                  key={item.id}
+                  index={item.id}
+                  onPress={() => handleVerseSelection(item)}
+                />
+              ))}
+            </View>
+          </ScrollView>
+        ) : (
+          <Text style={styles.error}>{Strings.APP_ERROR}</Text>
+        )}
       </View>
-      {isLoading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size={'large'} color={Colors.marron_oak} />
-        </View>
-      ) : isSuccess ? (
-        <View style={{marginVertical: 12}}>
-          <FlatList
-            data={data}
-            renderItem={({item}) => (
-              <VerseItem
-                verse={item}
-                onNavigation={(index: number) =>
-                  navigation.navigate('VerseDetails', {verse: item})
-                }
-              />
-            )}
-          />
-        </View>
-      ) : (
-        <Text style={styles.error}>{Strings.APP_ERROR}</Text>
-      )}
     </SafeAreaView>
   );
 };
@@ -64,6 +72,9 @@ const Verses = ({navigation}: VersesProps) => {
 export default Verses;
 
 const styles = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.backgroundColor,
@@ -94,5 +105,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '75%',
     height: '100%',
+  },
+  verseTile: {
+    paddingVertical: 12,
+    flexDirection: 'row',
+    gap: 12,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
