@@ -30,45 +30,41 @@ const Verses = ({navigation}: VersesProps) => {
   console.log('route =>', data);
 
   const handleVerseSelection = (verse: VerseType) => {
-    navigation.navigate('VerseDetails');
+    navigation.navigate('VerseDetails', {verse});
   };
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={Colors.backgroundColor}
-      />
-      <View style={styles.header}>
-        <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-          {`Chapter ${index}`}
-        </Text>
-      </View>
-      {isLoading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size={'large'} color={Colors.marron_oak} />
+    <SafeAreaView style={styles.safeContainer}>
+      <View style={styles.container}>
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={Colors.backgroundColor}
+        />
+        <View style={styles.header}>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+            {`Chapter ${index}`}
+          </Text>
         </View>
-      ) : isSuccess ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        {isLoading ? (
           <View
-            style={{
-              paddingVertical: 12,
-              flexDirection: 'row',
-              gap: 12,
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}>
-            {data?.map((item: VerseType) => (
-              <VerseTitle
-                index={item.id}
-                onPress={() => handleVerseSelection(item)}
-              />
-            ))}
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size={'large'} color={Colors.marron_oak} />
           </View>
-        </ScrollView>
-      ) : (
-        <Text style={styles.error}>{Strings.APP_ERROR}</Text>
-      )}
+        ) : isSuccess ? (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.verseTile}>
+              {data?.map((item: VerseType) => (
+                <VerseTitle
+                  key={item.id}
+                  index={item.id}
+                  onPress={() => handleVerseSelection(item)}
+                />
+              ))}
+            </View>
+          </ScrollView>
+        ) : (
+          <Text style={styles.error}>{Strings.APP_ERROR}</Text>
+        )}
+      </View>
     </SafeAreaView>
   );
 };
@@ -76,6 +72,9 @@ const Verses = ({navigation}: VersesProps) => {
 export default Verses;
 
 const styles = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.backgroundColor,
@@ -107,20 +106,12 @@ const styles = StyleSheet.create({
     width: '75%',
     height: '100%',
   },
+  verseTile: {
+    paddingVertical: 12,
+    flexDirection: 'row',
+    gap: 12,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
-
-{
-  /* <View style={{marginVertical: 12}}>
-          <FlatList
-            data={data}
-            renderItem={({item}) => (
-              <VerseItem
-                verse={item}
-                onNavigation={(index: number) =>
-                  navigation.navigate('VerseDetails', {verse: item})
-                }
-              />
-            )}
-          />
-        </View> */
-}

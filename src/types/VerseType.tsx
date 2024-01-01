@@ -1,4 +1,4 @@
-export type Translations = {
+export type TranslationType = {
   id: number;
   description: string;
   author_name: string;
@@ -12,5 +12,5 @@ export type VerseType = {
   text: string;
   transliteration: string;
   word_meanings: string;
-  translations: Translations[];
+  translations: TranslationType[];
 };

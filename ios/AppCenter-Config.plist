@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   AppCenter-Config.plist
+   Bhagavadgita
+
+   Created by pawan bangalala on 31/12/23.
+   Copyright (c) 2023 ___ORGANIZATIONNAME___. All rights reserved.
+-->
+<plist version="1.0">
+<dict>
+  <key>AppSecret</key>
+  <string>2d492dc2-75cb-4dc9-b7bb-8a0f204b09a9</string>
+</dict>
+</plist>
